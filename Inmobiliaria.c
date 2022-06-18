@@ -51,7 +51,7 @@ void mostrarPropiedades(ListaPropiedades *lista) {
     Propiedad *aux = lista->primera;
 
     if(aux == NULL){
-        printf("La lista esta vacía.\n");
+        printf("No hay propiedades disponibles.\n");
         return;
     }
 
@@ -64,34 +64,30 @@ void mostrarPropiedades(ListaPropiedades *lista) {
     }
 }
 
-void filtrar(ListaPropiedades *lista, char *barrioElegido, float precioMaximo, int ambientesMinimos) {
+ListaPropiedades *filtrar(ListaPropiedades *lista, char *barrioElegido, float precioMaximo, int ambientesMinimos) {
     Propiedad *aux = lista->primera;
 
-    if(aux == NULL){
-        printf("No hay propiedades disponibles.\n");
-        return;
-    }
+    ListaPropiedades *filtrados = crearListaPropiedades();
 
-    barrioElegido = eliminarEnter(barrioElegido); // Esto esta porque cuando le das
-    // "Enter" en el momento del ingreso, C agrega un '\n', que a la hora de compararlo
-    // con el barrio, no reconoce las palabras como iguales.
+        barrioElegido = eliminarEnter(barrioElegido); // Esto esta porque cuando le das
+        // "Enter" en el momento del ingreso, C agrega un '\n', que a la hora de compararlo
+        // con el barrio, no reconoce las palabras como iguales.
 
-    printf("-- Propiedades disponibles:\n");
+        printf("-- Propiedades disponibles:\n");
 
-    for(; aux != NULL; aux = aux->siguiente){
+        for(; aux != NULL; aux = aux->siguiente){
 
-        if(strcmp(aux->barrio, barrioElegido) == 0 &&
-            aux->precio <= precioMaximo &&
-            aux->ambientes >= ambientesMinimos){
+            if(strcmp(aux->barrio, barrioElegido) == 0 &&
+                aux->precio <= precioMaximo &&
+                aux->ambientes >= ambientesMinimos){
 
-            printf("* Barrio: %s - Dirección: %s - Precio: %.2f - Ambientes: %d\n",
-                   aux->barrio,
-                   aux->direccion,
-                   aux->precio,
-                   aux->ambientes);
+                copiarAFiltrados(filtrados, aux);
+
+            }
+
         }
 
-    }
+    return filtrados;
 
 }
 
@@ -110,4 +106,30 @@ char *eliminarEnter(char *texto) {
     resultado[j] = '\0';
 
     return resultado;
+}
+
+void copiarAFiltrados(ListaPropiedades *filtrados, Propiedad *nueva) {
+    Propiedad *copia = (Propiedad*) malloc(sizeof (Propiedad));
+
+    if(copia == NULL){
+        printf("No hay memoria libre.");
+        exit(-1);
+    }
+
+    copia->siguiente = NULL;
+    copia->ambientes = nueva->ambientes;
+    copia->precio = nueva->precio;
+    copia->barrio = nueva->barrio;
+    copia->direccion = nueva->direccion;
+
+    Propiedad *aux = filtrados->primera;
+
+    if(aux == NULL){
+        filtrados->primera = copia;
+        return;
+    }
+
+    for(; aux->siguiente != NULL; aux = aux->siguiente){}
+
+    aux->siguiente = copia;
 }

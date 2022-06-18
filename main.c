@@ -19,13 +19,12 @@ int main() {
 
     // --------------------------------------------------
 
-    char *barrio;
-    float precio;
-    int ambientes;
+    char barrio[100];
+    float precio = 0;
+    int ambientes = 0;
 
     printf("INGRESE EL BARRIO DE INTERÉS: ");
     fgets(barrio, 100, stdin);
-    fflush(stdin);
 
     printf("INGRESE EL PRECIO MÁXIMO: ");
     scanf("%f", &precio);
@@ -35,7 +34,8 @@ int main() {
     scanf("%d", &ambientes);
     fflush(stdin);
 
-    filtrar(lista, barrio, precio, ambientes);
+    ListaPropiedades *filtrados = filtrar(lista, barrio, precio, ambientes);
+    mostrarPropiedades(filtrados);
 
     return 0;
 }

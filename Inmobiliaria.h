@@ -18,7 +18,8 @@ ListaPropiedades *crearListaPropiedades();
 Propiedad *crearPropiedad(char *barrio, char *direccion, float precio, int ambientes);
 void agregarPropiedad(ListaPropiedades *lista, Propiedad *nueva);
 void mostrarPropiedades(ListaPropiedades *lista);
-void filtrar(ListaPropiedades *lista, char *barrioElegido, float precioMaximo, int ambientesMinimos);
+ListaPropiedades *filtrar(ListaPropiedades *lista, char *barrioElegido, float precioMaximo, int ambientesMinimos);
+void copiarAFiltrados(ListaPropiedades *filtrados, Propiedad *nueva);
 char *eliminarEnter(char *texto);
 
 #endif
