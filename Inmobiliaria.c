@@ -1,6 +1,7 @@
 #include "Inmobiliaria.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 ListaPropiedades *crearListaPropiedades() {
     ListaPropiedades *lista = (ListaPropiedades *) malloc(sizeof (ListaPropiedades));
@@ -31,4 +32,82 @@ Propiedad *crearPropiedad(char *barrio, char *direccion, float precio, int ambie
     nueva->ambientes = ambientes;
 
     return nueva;
+}
+
+void agregarPropiedad(ListaPropiedades *lista, Propiedad *nueva) {
+    Propiedad *aux = lista->primera;
+
+    if(aux == NULL){
+        lista->primera = nueva;
+        return;
+    }
+
+    for(; aux->siguiente != NULL; aux = aux->siguiente){}
+
+    aux->siguiente = nueva;
+}
+
+void mostrarPropiedades(ListaPropiedades *lista) {
+    Propiedad *aux = lista->primera;
+
+    if(aux == NULL){
+        printf("La lista esta vacía.\n");
+        return;
+    }
+
+    for(; aux != NULL; aux = aux->siguiente){
+        printf("* Barrio: %s \t- Dirección: %s \t- Precio: %.2f \t- Ambientes: %d\n",
+               aux->barrio,
+               aux->direccion,
+               aux->precio,
+               aux->ambientes);
+    }
+}
+
+void filtrar(ListaPropiedades *lista, char *barrioElegido, float precioMaximo, int ambientesMinimos) {
+    Propiedad *aux = lista->primera;
+
+    if(aux == NULL){
+        printf("No hay propiedades disponibles.\n");
+        return;
+    }
+
+    barrioElegido = eliminarEnter(barrioElegido); // Esto esta porque cuando le das
+    // "Enter" en el momento del ingreso, C agrega un '\n', que a la hora de compararlo
+    // con el barrio, no reconoce las palabras como iguales.
+
+    printf("-- Propiedades disponibles:\n");
+
+    for(; aux != NULL; aux = aux->siguiente){
+
+        if(strcmp(aux->barrio, barrioElegido) == 0 &&
+            aux->precio <= precioMaximo &&
+            aux->ambientes >= ambientesMinimos){
+
+            printf("* Barrio: %s - Dirección: %s - Precio: %.2f - Ambientes: %d\n",
+                   aux->barrio,
+                   aux->direccion,
+                   aux->precio,
+                   aux->ambientes);
+        }
+
+    }
+
+}
+
+char *eliminarEnter(char *texto) {
+    char *resultado;
+    int i, j;
+
+    for (i = 0; texto[i] != '\n'; i++){}
+
+    resultado = (char *) malloc(sizeof (char) * (i+1)); // i = cantidad de caracteres, +1 para el \0
+
+    for(j = 0; j < i; j++){
+        resultado[j] = texto[j];
+    }
+
+    resultado[j] = '\0';
+
+    return resultado;
 }

@@ -17,7 +17,8 @@ typedef struct listaPropiedades {
 ListaPropiedades *crearListaPropiedades();
 Propiedad *crearPropiedad(char *barrio, char *direccion, float precio, int ambientes);
 void agregarPropiedad(ListaPropiedades *lista, Propiedad *nueva);
-void filtrar(char *barrio, float precioMaximo, int ambientesMinimos);
 void mostrarPropiedades(ListaPropiedades *lista);
+void filtrar(ListaPropiedades *lista, char *barrioElegido, float precioMaximo, int ambientesMinimos);
+char *eliminarEnter(char *texto);
 
 #endif
